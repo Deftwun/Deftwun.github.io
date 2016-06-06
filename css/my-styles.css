@@ -1,0 +1,36 @@
+.btn-contact{
+	margin:5px;
+}
+
+.modal{
+	color:black;
+}
+
+.control-label{
+	float:left;
+}
+
+.modal-body{
+	overflow:hidden;
+}
+
+.social-links {
+	margin:auto;
+	margin-top:50px;
+	border-radius:25px;
+	background-color:#444;
+	max-width:400px;
+	padding:15px;
+}
+
+
+.social-links-top {
+	background-color:#222;
+}
+
+.social-links a{
+	color:#fff;
+}
+.social-links a:hover{
+	color:#f05f40;
+}
