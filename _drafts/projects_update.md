@@ -20,9 +20,10 @@ seems to work surprisingly well.
 - Should I Scale sprites to fit physics object size?
 	- Physics objects hava a bounds property that could define width/height
     - Allow for more flexibility with entity sizes
-    - Some objects might need a tiled sprite instead of a scaled sprite.. where is this defined/set
+    - Some objects might need a tiled sprite instead of a scaled sprite.. where is this defined/set?
 - Entities constructor should use an options object instead of regular args
-	- 
+	- This is where sprite scaled/tiled property exists
+    	- This means Actor will need to be a member of Entity. Should be anyways really. Keep all entity setup/config in one file.
 
 ##FreecodeCamp
 Need to get back on track and finish up back end development certification. I've finished all the api project a few months back and then took a break. I'll need to brush up on my express/passport knowledge though. [Things can get pretty hairy when you go the DIY route](https://www.youtube.com/watch?v=yvviEA1pOXw). I have a feeling there are preconfigured frameworks/templates available though that handle alot of the user authentication/authorization setup for you.
