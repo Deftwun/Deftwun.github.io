@@ -6,7 +6,7 @@ published: true
 ---
 
 ##Game
-I've been working on this multiplayer game using node,socket.io, matterjs, and Pixijs. So far it's coming together pretty well. I'm trying to focus on just the game and not get carried away on 'engine' features. [ZombieCopter]() pretty much turned into a full on engine to that point that the game was a little lost. Now that I'm trying to live in Javascript land I'm trying to utilize the features of JS that let you just get things done. 
+I've been working on this multiplayer game using node, socket.io, matterjs, and Pixijs. So far it's coming together pretty well. I'm trying to focus on just the game and not get carried away on 'engine' features.  [ZombieCopter](https://github.com/Deftwun/ZombieCopter) pretty much turned into a full on engine to that point that the game was a little lost. Now that I'm trying to live in Javascript land I'm trying to utilize the features of JS that let you just get things done. 
 
 So far I think I'm only ~2-3 weeks in working on it here and there. Just finished getting sprites & rendering working. 
 
