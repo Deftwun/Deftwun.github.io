@@ -4,6 +4,9 @@ layout: post
 date: {}
 published: true
 ---
+##Job
+Time to fix up the resume and start the search. I'm determined to get a developer job. I'm sure it's not going to be easy but I'm feeling confident. Developing software is what I would be doing in my spare time so it just makes sense that I need to be doing this for a living. 
+
 
 ##Game
 I've been working on this multiplayer game using node, socket.io, matterjs, and Pixijs. So far it's coming together pretty well. I'm trying to focus on just the game and not get carried away on 'engine' features.  [ZombieCopter](https://github.com/Deftwun/ZombieCopter) pretty much turned into a full on engine to that point that the game was a little lost. Now that I'm trying to live in Javascript land I'm trying to utilize the features of JS that let you just get things done. 
