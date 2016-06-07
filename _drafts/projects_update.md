@@ -18,7 +18,7 @@ Rendering is working now just need to organize some things better.
 -  
 
 ##FreecodeCamp
-Need to get back on track and finish up back end development certification. I've finished all the api project a few months back and then took a break. I'll need to brush up on my express/passport knowledge though. [Things can get pretty hairy when you go the DIY route](). I have a feeling there are preconfigured frameworks/templates available though that handle alot of the user authentication/authorization setup for you.
+Need to get back on track and finish up back end development certification. I've finished all the api project a few months back and then took a break. I'll need to brush up on my express/passport knowledge though. [Things can get pretty hairy when you go the DIY route](https://www.youtube.com/watch?v=yvviEA1pOXw). I have a feeling there are preconfigured frameworks/templates available though that handle alot of the user authentication/authorization setup for you.
 
 These are the apps I need to build
 
@@ -29,5 +29,4 @@ These are the apps I need to build
 - [ ] [Build a pinterest clone](https://www.freecodecamp.com/challenges/build-a-pinterest-clone)
 
 ##Knitting App
-
-Where does this stand right now? Basics working. Need icons and maybe a better app like frame work? Might just be a waste of time though. Basics of changin tile colors was down as well as the general touch controls for panning and zoooming i think. Maybe a second canvas for rendering icons. 
+Building this for my wife.Where does this stand right now? Basics working. Need icons and maybe a better app like frame work? Might just be a waste of time though. Basics of changing tile colors was down as well as the general touch controls for panning and zoooming i think. Maybe a second canvas for rendering icons is where I left off? 
