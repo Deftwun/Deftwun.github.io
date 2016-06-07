@@ -20,7 +20,7 @@ seems to work surprisingly well.
 - Should I Scale sprites to fit physics object size?
 	- Physics objects hava a bounds property that could define width/height
     - Allow for more flexibility with entity sizes
-    - Some objects might need a tiled sprite instead of a scaled sprite.. where is this defined/set/determined
+    - Some objects might need a tiled sprite instead of a scaled sprite.. where is this defined/set
 - Entities constructor should use an options object instead of regular args
 	- 
 
