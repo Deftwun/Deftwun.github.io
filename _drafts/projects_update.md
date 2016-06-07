@@ -6,6 +6,7 @@ published: true
 ---
 
 ##Game
+![tankgame.jpg]({{site.baseurl}}/_drafts/tankgame.jpg)
 
 Rendering is working now just need to organize some things better.
 
