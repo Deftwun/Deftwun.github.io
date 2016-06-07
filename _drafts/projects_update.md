@@ -18,10 +18,15 @@ Rendering is working now just need to organize some things better.
 -  
 
 ##FreecodeCamp
-Need to get back to freecodecamp projects
+Need to get back on track and finish up back end development certification
 
-- Voting app
-- Express authorization/authentication
+These are the apps I need to build
+
+- [ ] [Voting app](https://www.freecodecamp.com/challenges/build-a-voting-app)
+- [ ] [Nightlife coordination app](https://www.freecodecamp.com/challenges/build-a-nightlife-coordination-app)
+- [ ] [Chart stock market](https://www.freecodecamp.com/challenges/chart-the-stock-market)
+- [ ] [Manage a book trading club](https://www.freecodecamp.com/challenges/manage-a-book-trading-club)
+- [ ] [Build a pinterest clone](https://www.freecodecamp.com/challenges/build-a-pinterest-clone)
 
 ##Knitting App
 
