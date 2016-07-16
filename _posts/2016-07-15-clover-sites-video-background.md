@@ -61,7 +61,12 @@ There is another solution though, although its more of a work-around:
 </script>
 ```
 
-### Note:
-You'll also want to make sure the section image is removed, invisible, or has identical aspect ratio of your video.
+## Things To Note:
 
-It's certainly not perfect, as the video is overlaying _everything_ when viewed in the editor. But it looks fine in preview mode and when live.
+- Make sure the section image is removed, invisible, or has identical aspect ratio of your video or it wont look right. 
+
+- The video is overlaying _everything_ when viewed in the editor. But it looks fine in preview mode and when live.
+
+- This isn't really a feature of clover and might break in the future. 
+
+- It might only work with some templates
