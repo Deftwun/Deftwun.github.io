@@ -190,8 +190,8 @@
     for (var i=0;i<150;i++){
       //createDebris(new Victor().randomize({x:0,y:0},{x:canvas.width,y:canvas.height}));
       createDebris(new Victor().randomize(
-                    {x:canvas.width - 200,y:canvas.height -200},
-                    {x:canvas.width + 200,y:canvas.height +200}));
+                    {x:canvas.width/2 - 300,y:canvas.height/2 -300},
+                    {x:canvas.width/2 + 300,y:canvas.height/2 +300}));
     }
     player = createPlayer({x:0,y:0});
 
