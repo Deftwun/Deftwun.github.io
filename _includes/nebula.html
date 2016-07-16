@@ -186,8 +186,8 @@
     
     var sun = createSun({x:canvas.width/2,y:canvas.height/2});
     
-    for (var i=0; i <10;i++){
-      createPlanet(new Victor().randomize({x:0,y:0},{x:canvas.width,y:canvas.height}),sun);
+    for (var i=0; i <20;i++){
+      createPlanet(new Victor(Math.random() * canvas.width,Math.random() * canvas.height),sun);
     }
     for (var i=0;i<150;i++){
       createDebris(new Victor(Math.random() * canvas.width,Math.random() * canvas.height));
