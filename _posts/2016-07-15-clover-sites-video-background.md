@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How do you get a video background on Clover Sites
+title: How to get a video background on Clover Sites
 date: 2016-07-15T05:00:00.000Z
 published: true
 ---
