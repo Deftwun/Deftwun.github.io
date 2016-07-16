@@ -5,10 +5,9 @@
 (function(){
   
   /* Canvas */
-  var canvas = document.getElementById("nebula-canvas"),
+  var canvas = document.getElementById("canvas"),
       ctx = canvas.getContext("2d");
-  
-  /*----------------------------------------------------------------------*/
+
   /* Particle
    * @param p {Vector2} position
    * @param v {Vector2} velocity
@@ -18,175 +17,190 @@
   var Particle = function(p,v,r,c){
     this.position = new Victor(p.x,p.y),
     this.velocity = new Victor(v.x,v.y);
-    this.maxSpeed = Math.random() * 5 +3;
     this.radius = r;
-    this.scaler = 1;
-    this.keepInBounds = true;
-    this.restitution = .5;
     this.color=c||"black";
-    this.strokeColor="black;"
   };
   Particle.prototype = {
-    /* Update */
+    //Update Position
     update: function(){
       this.position.add(this.velocity);
-      if (this.keepInBounds){
-        if (this.position.x > canvas.width) {this.position.x = canvas.width; this.velocity.x*=-this.restitution};
-        if (this.position.x < 0) {this.position.x = 0; this.velocity.x *= -this.restitution};
-        if (this.position.y > canvas.height) {this.position.y = canvas.height; this.velocity.y*=-this.restitution};
-        if (this.position.y < 0) {this.position.y = 0; this.velocity.y *= -this.restitution};      
-      }
-      if (this.velocity.length() > this.maxSpeed){
-        this.velocity.multiply({x:.8,y:.8});
-      }
     },
-    /* Render */
+    
+    //Render the particle
     render: function(){
-      function drawCircle(cx,cy,r,fill,stroke,strokeWidth){
-        ctx.beginPath();
-        ctx.arc(cx,cy,r, 0, 2*Math.PI, false);
-        ctx.fillStyle = fill ? fill : '#111';
-        ctx.fill();
-        ctx.lineWidth = strokeWidth ? strokeWidth : 1;
-        ctx.strokeStyle = stroke ? stroke : 'rgba(0,0,0,1)';
-        ctx.stroke();
-      }
-      drawCircle(this.position.x,this.position.y,this.radius*this.scalar,this.color,this.strokeColor); 
+      drawCircle(this.position.x,this.position.y,this.radius,this.color);
     },
+
+    //Return center point
+    getCenter: function(){
+      var cx = this.position.x + (ctx.measureText(this.text).width/2),
+        cy = this.position.y - fontSize/2;
+      return new Victor(cx,cy);
+    }
   }
-  /*----------------------------------------------------------------------*/
   
+  //Helper function
+  function drawCircle(cx,cy,r,fill,stroke,strokeWidth){
+    ctx.beginPath();
+    ctx.arc(cx,cy,r, 0, 2*Math.PI, false);
+    ctx.fillStyle = fill ? fill : '#111';
+    ctx.fill();
+    ctx.lineWidth = strokeWidth ? strokeWidth : 1;
+    ctx.strokeStyle = stroke ? stroke : '#111';
+    ctx.stroke();
+  }
   
-
-  /* Game Logic 
-   ----------------------------------------------------------------------*/
-  var mouseGravity = .2,
-      wells = [],
-      particles = [],
-      coloredParticles = [];
-
-  /* Apply gravity to a single particle */
+  //GAME CONFIG
+  /* ***************************** */
+  var player = null;
+  var suns = [];
+  var planets = [];
+  var debris = [];
+  var entities = [];
+  var sunGravity = .001,
+      planetGravity = .005,
+      maxPlayerSpeed = .3;
+  /* ****************************** */
+  
+  /*Apply Gravity to a single particle
+   *@param point {Vector object} gravity source position
+   *@param magnitude {number} how much gravity to apply
+   */
   function applyGravity(particle,point,magnitude){
     var force = point.clone()
-    .subtract(particle.position)
-    .normalize()
-    .multiply({x:magnitude,y:magnitude});
+      .subtract(particle.position)
+      .normalize()
+      .multiply({x:magnitude,y:magnitude});
     particle.velocity.add(force);
   }
-
-  /* Update everything */
+  
+  /*Update Everything*/
   function update(){
-    for (var i in particles){
-      for (var j in wells){
-        applyGravity(particles[i],wells[j].position,wells[j].magnitude);
+
+    //Sun gravity
+    for (var s in suns){
+      for (var p in planets){
+        applyGravity(planets[p],suns[s].position,sunGravity);
       }
-      particles[i].update();
-      var distance = particles[i].position.distance(wells[0].position);
-      /**/
-      //console.log(distance);
-      particles[i].scalar = Math.min(Math.max(.75,1010/(1+distance)),1.25);
-        
     }
-    for (var i in coloredParticles){
-      var distance = particles[i].position.distance(wells[0].position);
-      //coloredParticles[i].color = "rgba("+ (Math.floor(Math.random()*50) + 200) + ",125,50,"+(10/(distance*2)) +")";        
+    
+    //Planet Gravity
+    for (var p in planets){
+      for (var d in debris){
+        applyGravity(debris[d],planets[p].position,planetGravity);
+      }
+      if (player) applyGravity(player,planets[p].position,planetGravity);
     }
-  }
-
-  /* Render everything */
-  function render(){
-    ctx.fillStyle = "rgba(0,0,0,.1)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    for (var i in particles){
-      particles[i].render();
+    
+    //Throttle player speed
+    if (player.velocity.length() > maxPlayerSpeed){
+      player.velocity.norm().multiply({x:maxPlayerSpeed,y:maxPlayerSpeed});
     }
-    for (var i in coloredParticles){
-      coloredParticles[i].render();
+    
+    //Update positions
+    for (var i in entities){
+      entities[i].update();
     }
-  }
 
-  /* Game loop */
-  function loop(){
-    update();  
-    render();
-    requestAnimationFrame(loop);
-  }
-
-  /* Create new particle */
-  function createParticle(position){
-    var particle = 
-        new Particle(
-          { x:position.x, y:position.y },
-          { x:0, y:0},
-          Math.random() * 8 + 3,
-          "white" );
-
-    particles.push(particle);
-    return particle;
-  }
-
-  /* Create a new gravity well */
-  function createWell(position,magnitude){
-    var well = {
-      position:position,
-      magnitude:magnitude
-    };
-    wells.push(well);
-    return well;
-  }
-
-  /* Get random point inside square */
-  function getRandomPoint(size){
-    var point = new Victor().randomize(
-      {x:canvas.width/2 - size,y:canvas.height/2 -size},
-      {x:canvas.width/2 + size,y:canvas.height/2 +size});
-    return point;
   }
   
-  /* Start simulating */
-  function start(){
-    canvas.width = $(window).width();
-    canvas.height = 500;
+  /*Render Everything*/
+  function render(){
+    //Game Logic
+    update();  
+    
+    //Clear canvas
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    //ctx.clearRect(0,0,canvas.width,canvas.height);
+    
+    /*
+    //Draw entities
+    for (var i in entities){
+      //entities[i].render();
+    }
+    */
+    for (var i in debris){
+      debris[i].render();
+    }
+    
+    requestAnimationFrame(render);
+  }
+  /*Create Planet Object*/
+  function createPlanet(position,sun){
+    var p = new Victor(position.x,position.y);
+    var vel = sun ? p.subtract(sun.position).rotateDeg(90).multiply({x:sunGravity*2,y:sunGravity*2}) : {x:0,y:0}
+    var planet = new Particle(position,vel,10,"black");
+    entities.push(planet);
+    planets.push(planet);
+    return planet;
+  }
+  
+  /*Create Player Object*/
+  function createPlayer(position,planet){
+    var p = new Victor(position.x,position.y);
+    var vel = planet ? p.subtract(planet.position)
+                        .rotateDeg(90)
+                        .multiply({x:planetGravity*2,y:planetGravity*2})
+                        .add(planet.velocity)
+                        : {x:0,y:0}
+    
+    var plyr = new Particle(position,{x:0,y:0},3,"blue");
+
+    entities.push(plyr);
+    player = plyr;
+    return player;
+  }
+  /*Create Debris Object*/
+  function createDebris(position,planet){
+    var p = new Victor(position.x,position.y);
+    var vel = planet ? p.subtract(planet.position)
+                        .rotateDeg(90)
+                        .multiply({x:planetGravity*2,y:planetGravity*2})
+                        .add(planet.velocity)
+                        : {x:0,y:0}
+    
+    var d = new Particle(position,{x:0,y:0},Math.random() * 5 + 3,"rgba(0,0,0,.9)");
+
+    entities.push(d);
+    debris.push(d);
+    return d;
+  }
+  /*Create Sun Object*/
+  function createSun(position){
+    var sun = new Particle(position,{x:0,y:0},20,"black");
+    entities.push(sun);
+    suns.push(sun);
+    return sun;
+  }
+  
+  /*Initialize Game*/
+  function init(){
+
     $(window).resize(function(){
-      //start();
-    });
-    
-    //Create mouse attached gravity well
-    createWell(new Victor(),mouseGravity);
-    $(canvas).on("mousemove",function(event){
-      wells[0].position.x = event.pageX;
-      wells[0].position.y = event.pageY;
+      canvas.width=$(window).width();
+      canvas.height=$(window).height();  
     })
+    $(window).trigger('resize');
     
-    //Create some static gravity wells
-    for (var i=0;i<15;i++){
-      createWell(getRandomPoint(canvas.width),.01);
+    var sun = createSun({x:canvas.width/2,y:canvas.height/2});
+    
+    for (var i=0; i <10;i++){
+      createPlanet(new Victor().randomize({x:0,y:0},{x:canvas.width,y:canvas.height}),sun);
     }
-    //Create particles
-    for (var i=0;i<50;i++){
-      var p = createParticle(getRandomPoint(canvas.width));
-      p.strokeColor = "rgba(0,0,0,1)";  
-      p.color = "#fff";
-      coloredParticles.push(p);
-    }  
-    //Create particles
-    for (var i=0;i<50;i++){
-      var p = createParticle(getRandomPoint(canvas.width));
-      p.color = "#aaa";
-      p.strokeColor = "rgba(0,0,0,0)";
+    for (var i=0;i<150;i++){
+      //createDebris(new Victor().randomize({x:0,y:0},{x:canvas.width,y:canvas.height}));
+      createDebris(new Victor().randomize(
+                    {x:canvas.width/2 - 200,y:canvas.height/2 -200},
+                    {x:canvas.width/2 + 200,y:canvas.height/2 +200}));
     }
-    //Create particles
-    for (var i=0;i<50;i++){
-      var p = createParticle(getRandomPoint(canvas.width));
-      p.color = "#ccc";
-      p.strokeColor = "rgba(0,0,0,0)";
-    }
+    player = createPlayer({x:0,y:0});
 
-
-    loop();
+    render();
+    //requestAnimationFrame(render);
   }
 
-  start();
+  init();
 
 })();
 </script>
