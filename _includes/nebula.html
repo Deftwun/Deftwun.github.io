@@ -189,7 +189,7 @@
     }
     for (var i=0;i<150;i++){
       //createDebris(new Victor().randomize({x:0,y:0},{x:canvas.width,y:canvas.height}));
-      createDebris(new Victor().randomize(
+      createDebris(new Victor(canvas.width/2,canvas.height/2).randomize(
                     //{x:canvas.width/2 - 500,y:canvas.height/2 -500},
                     //{x:canvas.width/2 + 500,y:canvas.height/2 +500}));
                     {x:0,y:0},
