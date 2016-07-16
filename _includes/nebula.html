@@ -1,0 +1,192 @@
+<canvas id="nebula-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+
+<script>
+(function(){
+  
+  /* Canvas */
+  var canvas = document.getElementById("nebula-canvas"),
+      ctx = canvas.getContext("2d");
+
+  
+  /*----------------------------------------------------------------------*/
+  /* Particle
+   * @param p {Vector2} position
+   * @param v {Vector2} velocity
+   * @param r {number} radius
+   * @param c {color} 
+   */
+  var Particle = function(p,v,r,c){
+    this.position = new Victor(p.x,p.y),
+    this.velocity = new Victor(v.x,v.y);
+    this.maxSpeed = Math.random() * 5 +3;
+    this.radius = r;
+    this.scaler = 1;
+    this.keepInBounds = true;
+    this.restitution = .5;
+    this.color=c||"black";
+    this.strokeColor="black;"
+  };
+  Particle.prototype = {
+    /* Update */
+    update: function(){
+      this.position.add(this.velocity);
+      if (this.keepInBounds){
+        if (this.position.x > canvas.width) {this.position.x = canvas.width; this.velocity.x*=-this.restitution};
+        if (this.position.x < 0) {this.position.x = 0; this.velocity.x *= -this.restitution};
+        if (this.position.y > canvas.height) {this.position.y = canvas.height; this.velocity.y*=-this.restitution};
+        if (this.position.y < 0) {this.position.y = 0; this.velocity.y *= -this.restitution};      
+      }
+      if (this.velocity.length() > this.maxSpeed){
+        this.velocity.multiply({x:.8,y:.8});
+      }
+    },
+    /* Render */
+    render: function(){
+      function drawCircle(cx,cy,r,fill,stroke,strokeWidth){
+        ctx.beginPath();
+        ctx.arc(cx,cy,r, 0, 2*Math.PI, false);
+        ctx.fillStyle = fill ? fill : '#111';
+        ctx.fill();
+        ctx.lineWidth = strokeWidth ? strokeWidth : 1;
+        ctx.strokeStyle = stroke ? stroke : 'rgba(0,0,0,1)';
+        ctx.stroke();
+      }
+      drawCircle(this.position.x,this.position.y,this.radius*this.scalar,this.color,this.strokeColor); 
+    },
+  }
+  /*----------------------------------------------------------------------*/
+  
+  
+
+  /* Game Logic 
+   ----------------------------------------------------------------------*/
+  var mouseGravity = .2,
+      wells = [],
+      particles = [],
+      coloredParticles = [];
+
+  /* Apply gravity to a single particle */
+  function applyGravity(particle,point,magnitude){
+    var force = point.clone()
+    .subtract(particle.position)
+    .normalize()
+    .multiply({x:magnitude,y:magnitude});
+    particle.velocity.add(force);
+  }
+
+  /* Update everything */
+  function update(){
+    for (var i in particles){
+      for (var j in wells){
+        applyGravity(particles[i],wells[j].position,wells[j].magnitude);
+      }
+      particles[i].update();
+      var distance = particles[i].position.distance(wells[0].position);
+      /**/
+      //console.log(distance);
+      particles[i].scalar = Math.min(Math.max(.75,1010/(1+distance)),1.25);
+        
+    }
+    for (var i in coloredParticles){
+      var distance = particles[i].position.distance(wells[0].position);
+      //coloredParticles[i].color = "rgba("+ (Math.floor(Math.random()*50) + 200) + ",125,50,"+(10/(distance*2)) +")";        
+    }
+  }
+
+  /* Render everything */
+  function render(){
+    ctx.fillStyle = "rgba(0,0,0,.1)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    for (var i in particles){
+      particles[i].render();
+    }
+    for (var i in coloredParticles){
+      coloredParticles[i].render();
+    }
+  }
+
+  /* Game loop */
+  function loop(){
+    update();  
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  /* Create new particle */
+  function createParticle(position){
+    var particle = 
+        new Particle(
+          { x:position.x, y:position.y },
+          { x:0, y:0},
+          Math.random() * 8 + 3,
+          "white" );
+
+    particles.push(particle);
+    return particle;
+  }
+
+  /* Create a new gravity well */
+  function createWell(position,magnitude){
+    var well = {
+      position:position,
+      magnitude:magnitude
+    };
+    wells.push(well);
+    return well;
+  }
+
+  /* Get random point inside square */
+  function getRandomPoint(size){
+    var point = new Victor().randomize(
+      {x:canvas.width/2 - size,y:canvas.height/2 -size},
+      {x:canvas.width/2 + size,y:canvas.height/2 +size});
+    return point;
+  }
+  
+  /* Start simulating */
+  function start(){
+    canvas.width = $(window).width();
+    canvas.height = 500;
+    $(window).resize(function(){
+      //start();
+    });
+    
+    //Create mouse attached gravity well
+    createWell(new Victor(),mouseGravity);
+    $(canvas).on("mousemove",function(event){
+      wells[0].position.x = event.pageX;
+      wells[0].position.y = event.pageY;
+    })
+    
+    //Create some static gravity wells
+    for (var i=0;i<15;i++){
+      createWell(getRandomPoint(canvas.width),.01);
+    }
+    //Create particles
+    for (var i=0;i<50;i++){
+      var p = createParticle(getRandomPoint(canvas.width));
+      p.strokeColor = "rgba(0,0,0,1)";  
+      p.color = "#fff";
+      coloredParticles.push(p);
+    }  
+    //Create particles
+    for (var i=0;i<50;i++){
+      var p = createParticle(getRandomPoint(canvas.width));
+      p.color = "#aaa";
+      p.strokeColor = "rgba(0,0,0,0)";
+    }
+    //Create particles
+    for (var i=0;i<50;i++){
+      var p = createParticle(getRandomPoint(canvas.width));
+      p.color = "#ccc";
+      p.strokeColor = "rgba(0,0,0,0)";
+    }
+
+
+    loop();
+  }
+
+  start();
+
+})();
+</script>
