@@ -1,7 +1,7 @@
 ---
-title:"Clover Sites Video Background"
-layout:post
-date:   2016-07-15 5:00:00
+layout: post
+title: "Clover Sites Video Background"
+date: 2016-07-15 5:00:00
 published: true
 ---
 # How do you get a video background on Clover Sites
