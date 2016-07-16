@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 ---
 # How do you get a video background on Clover Sites
 
