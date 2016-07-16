@@ -122,14 +122,16 @@
     for (var i in debris){
       debris[i].render();
     }
-    
+    for (var i in planets){
+      planets[i].render();
+    }
     requestAnimationFrame(render);
   }
   /*Create Planet Object*/
   function createPlanet(position,sun){
     var p = new Victor(position.x,position.y);
     var vel = sun ? p.subtract(sun.position).rotateDeg(90).multiply({x:sunGravity*2,y:sunGravity*2}) : {x:0,y:0}
-    var planet = new Particle(position,vel,10,"black");
+    var planet = new Particle(position,vel,10,"rgba(0,0,0,.95)");
     entities.push(planet);
     planets.push(planet);
     return planet;
@@ -193,7 +195,7 @@
       //createDebris(new Victor(0,0).randomize(
                     //{x:canvas.width/2 - 500,y:canvas.height/2 -500},
                     //{x:canvas.width/2 + 500,y:canvas.height/2 +500}));
-    
+    }
     player = createPlayer({x:0,y:0});
 
     render();
