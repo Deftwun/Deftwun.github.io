@@ -6,18 +6,18 @@ published: true
 ---
 # How do you get a video background on Clover Sites
 
-##Convert to Gif
+## Convert to Gif
 Currently the only way to get a video background with Clover Sites is by converting your video to a gif. This may be the best & cleanest solution. But may be a problem if you have large video.
 
 There is another solution though, although its more of a work-around:
 
-##Custom code
+## Custom code
 1. Once your in the editor, click  'ADVANCED MODE' at the top-left of the screen.
 2. Then click on 'Design Settings'.
 3. Scroll down until you see  a box labeled 'CUSTOM <HEAD> CODE'.
 4. Paste in code below. (make sure to change videoURL)
 
-###Paste
+### Paste
 ```javascript
 <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"></script>
 <script>
@@ -64,7 +64,7 @@ There is another solution though, although its more of a work-around:
 </script>
 ```
 
-###Note:
+### Note:
 You'll also want to make sure the section image is removed, invisible, or has identical aspect ratio of your video.
 
 It's certainly not perfect, as the video is overlaying _everything_ when viewed in the editor. But it looks fine in preview mode and when live.
