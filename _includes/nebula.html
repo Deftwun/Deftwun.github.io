@@ -131,7 +131,7 @@
   function createPlanet(position,sun){
     var p = new Victor(position.x,position.y);
     var vel = sun ? p.subtract(sun.position).rotateDeg(90).multiply({x:sunGravity*2,y:sunGravity*2}) : {x:0,y:0}
-    var planet = new Particle(position,vel,10,"orange");
+    var planet = new Particle(position,vel,10,"#1756a9");
     entities.push(planet);
     planets.push(planet);
     return planet;
