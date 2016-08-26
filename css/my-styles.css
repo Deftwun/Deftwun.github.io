@@ -2,6 +2,11 @@
 	margin:5px;
 }
 
+blockquote{
+	font-style:italic;
+	margin:35px;
+}
+
 .modal{
 	color:black;
 }
@@ -22,7 +27,6 @@
 	max-width:400px;
 	padding:15px;
 }
-
 
 .social-links-top {
 	background-color:#222;
